@@ -1,0 +1,70 @@
+#root {
+  width: 100%;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-link {
+  font-size: 15px;
+}
+
+.hero {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.hero p {
+  font-size: 18px;
+  margin-bottom: 40px;
+}
+
+.question-box {
+  width: 100%;
+  padding: 18px;
+  box-sizing: border-box;
+  font-size: 16px;
+  border-radius: 12px;
+  resize: vertical;
+}
+
+.ask-button {
+  margin-top: 20px;
+  padding: 12px 28px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.answer-section {
+  margin-top: 60px;
+  text-align: left;
+}
+
+.answer-box {
+  padding: 20px;
+  border-radius: 12px;
+  min-height: 100px;
+}
