@@ -6,34 +6,49 @@ function App() {
 
       <header className="header">
         <div className="logo">DSA-GPT</div>
-        <div className="nav-link">Progress</div>
+
+        <nav>
+          <span>Progress</span>
+        </nav>
       </header>
 
       <main className="hero">
 
-        <h1>Your AI DSA Tutor</h1>
+        <p className="subtitle">AI-POWERED DSA LEARNING</p>
 
-        <p>
-          Learn Data Structures and Algorithms.
-          Practice smarter. Prepare for interviews.
+        <h1>
+          Your AI DSA Tutor
+        </h1>
+
+        <p className="description">
+          Learn Data Structures and Algorithms,
+          practice problems, and prepare for technical interviews.
         </p>
 
-        <textarea
-          className="question-box"
-          placeholder="Ask a DSA question..."
-          rows="6"
-        />
+        <div className="question-container">
 
-        <button className="ask-button">
-          Ask DSA-GPT
-        </button>
+          <textarea
+            className="question-box"
+            placeholder="Ask a DSA question..."
+            rows="6"
+          />
+
+          <button className="ask-button">
+            Ask DSA-GPT
+          </button>
+
+        </div>
 
         <section className="answer-section">
+
           <h2>AI Tutor</h2>
 
           <div className="answer-box">
-            Your answer will appear here...
+            <p>
+              Your answer will appear here...
+            </p>
           </div>
+
         </section>
 
       </main>
