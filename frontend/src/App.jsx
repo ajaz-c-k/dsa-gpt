@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import "./App.css";
 
 function App() {
@@ -9,7 +10,6 @@ function App() {
   const [error, setError] = useState("");
 
   async function askDSAGPT() {
-    // Don't send an empty question
     if (!question.trim()) {
       setError("Please enter a DSA question.");
       return;
@@ -30,7 +30,6 @@ function App() {
         }),
       });
 
-      // Check whether the backend returned a successful response
       if (!response.ok) {
         throw new Error("Failed to get a response from the server.");
       }
@@ -99,13 +98,19 @@ function App() {
           <h2>AI Tutor</h2>
 
           <div className="answer-box">
+
             {loading ? (
               <p>DSA-GPT is thinking...</p>
             ) : answer ? (
-              <p>{answer}</p>
+              <div className="markdown-content">
+                <ReactMarkdown>
+                  {answer}
+                </ReactMarkdown>
+              </div>
             ) : (
               <p>Your answer will appear here...</p>
             )}
+
           </div>
 
         </section>
@@ -117,3 +122,4 @@ function App() {
 }
 
 export default App;
+
