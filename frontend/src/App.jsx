@@ -45,6 +45,12 @@ function App() {
     }
   }
 
+  function clearConversation() {
+    setQuestion("");
+    setAnswer("");
+    setError("");
+  }
+
   return (
     <div className="app">
 
@@ -77,13 +83,25 @@ function App() {
             onChange={(event) => setQuestion(event.target.value)}
           />
 
-          <button
-            className="ask-button"
-            onClick={askDSAGPT}
-            disabled={loading}
-          >
-            {loading ? "Thinking..." : "Ask DSA-GPT"}
-          </button>
+          <div className="button-container">
+
+            <button
+              className="ask-button"
+              onClick={askDSAGPT}
+              disabled={loading}
+            >
+              {loading ? "Thinking..." : "Ask DSA-GPT"}
+            </button>
+
+            <button
+              className="clear-button"
+              onClick={clearConversation}
+              disabled={loading}
+            >
+              Clear
+            </button>
+
+          </div>
 
         </div>
 
