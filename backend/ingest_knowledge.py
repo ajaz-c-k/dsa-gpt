@@ -1,25 +1,58 @@
-from pathlib import Path
+import os
 
 from services.embedding_service import create_embedding
 from services.vector_store import add_knowledge
 
 
-knowledge_folder = Path("knowledge")
+KNOWLEDGE_FOLDER = "knowledge"
 
 
-for file_path in knowledge_folder.glob("*.md"):
+def ingest_knowledge():
 
-    document = file_path.read_text(encoding="utf-8")
+    for filename in os.listdir(KNOWLEDGE_FOLDER):
 
-    embedding = create_embedding(document)
+        if not filename.endswith(".md"):
+            continue
 
-    add_knowledge(
-        document_id=file_path.stem,
-        document=document,
-        embedding=embedding,
-        metadata={
-            "source": file_path.name
+        file_path = os.path.join(
+            KNOWLEDGE_FOLDER,
+            filename
+        )
+
+        with open(
+            file_path,
+            "r",
+            encoding="utf-8"
+        ) as file:
+
+            document = file.read()
+
+        document_id = filename.replace(
+            ".md",
+            ""
+        )
+
+        embedding = create_embedding(
+            document
+        )
+
+        metadata = {
+            "source": filename,
+            "type": "dsa_knowledge"
         }
-    )
 
-    print(f"Stored: {file_path.name}")
+        add_knowledge(
+            document_id=document_id,
+            document=document,
+            embedding=embedding,
+            metadata=metadata
+        )
+
+        print(
+            f"Ingested: {filename}"
+        )
+
+
+if __name__ == "__main__":
+
+    ingest_knowledge()

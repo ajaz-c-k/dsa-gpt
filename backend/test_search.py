@@ -2,19 +2,20 @@ from services.embedding_service import create_embedding
 from services.vector_store import search_knowledge
 
 
-question = "How can I efficiently find an element in a sorted array?"
+question = "What is binary search?"
 
-
-query_embedding = create_embedding(question)
-
+query_embedding = create_embedding(
+    question
+)
 
 results = search_knowledge(
     query_embedding,
-    number_of_results=1
+    number_of_results=3
 )
 
-
 print("Search completed!")
-print()
-print("Retrieved knowledge:")
-print(results["documents"])
+
+print("\nRetrieved knowledge:")
+
+for result in results:
+    print(result)
