@@ -2,11 +2,15 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from services.embedding_service import create_embedding
 from services.llm_service import generate_answer
+from services.vector_store import search_knowledge
 from database.connection import get_problems
 
 
 app = FastAPI()
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -22,17 +26,45 @@ class Question(BaseModel):
 
 @app.get("/")
 def home():
-    return {"message": "DSA-GPT backend is running!"}
+
+    return {
+        "message": "DSA-GPT backend is running!"
+    }
 
 
 @app.post("/ask")
 def ask_question(data: Question):
 
-    answer = generate_answer(data.question)
+    query_embedding = create_embedding(
+        data.question
+    )
+
+    relevant_knowledge = search_knowledge(
+        query_embedding,
+        number_of_results=3
+    )
+
+    print("\n========== RAG DEBUG ==========")
+    print("USER QUESTION:")
+    print(data.question)
+
+    print("\nRETRIEVED KNOWLEDGE:")
+    for knowledge in relevant_knowledge:
+        print(knowledge)
+
+    print("\n================================\n")
+
+
+    answer = generate_answer(
+        data.question,
+        relevant_knowledge
+    )
 
     return {
         "answer": answer
     }
+
+
 @app.get("/problems")
 def get_all_problems():
 

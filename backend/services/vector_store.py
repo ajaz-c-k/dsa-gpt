@@ -36,4 +36,4 @@ def search_knowledge(
         n_results=number_of_results
     )
 
-    return results
+    return results["documents"][0]
