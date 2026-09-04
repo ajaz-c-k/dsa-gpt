@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import "./App.css";
@@ -8,6 +7,7 @@ function App() {
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [hintLevel, setHintLevel] = useState(0);
 
   async function askDSAGPT() {
     if (!question.trim()) {
@@ -18,6 +18,7 @@ function App() {
     setLoading(true);
     setError("");
     setAnswer("");
+    setHintLevel(0);
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/ask`, {
@@ -27,6 +28,8 @@ function App() {
         },
         body: JSON.stringify({
           question: question,
+          mode: "normal",
+          hint_level: 0,
         }),
       });
 
@@ -45,10 +48,55 @@ function App() {
     }
   }
 
+  async function getHint() {
+    if (!question.trim()) {
+      setError("Please enter a DSA question first.");
+      return;
+    }
+
+    const nextLevel = hintLevel + 1;
+
+    if (nextLevel > 3) {
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/ask`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          question: question,
+          mode: "hint",
+          hint_level: nextLevel,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to get a hint from the server.");
+      }
+
+      const data = await response.json();
+
+      setAnswer(data.answer);
+      setHintLevel(nextLevel);
+    } catch (error) {
+      console.error("Error:", error);
+      setError("Something went wrong while getting the hint.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   function clearConversation() {
     setQuestion("");
     setAnswer("");
     setError("");
+    setHintLevel(0);
   }
 
   return (
@@ -91,6 +139,18 @@ function App() {
               disabled={loading}
             >
               {loading ? "Thinking..." : "Ask DSA-GPT"}
+            </button>
+
+            <button
+              className="hint-button"
+              onClick={getHint}
+              disabled={loading || hintLevel >= 3}
+            >
+              {hintLevel === 0
+                ? "💡 Give me a hint"
+                : hintLevel < 3
+                ? "💡 Another hint"
+                : "💡 Hint limit reached"}
             </button>
 
             <button
@@ -140,4 +200,3 @@ function App() {
 }
 
 export default App;
-

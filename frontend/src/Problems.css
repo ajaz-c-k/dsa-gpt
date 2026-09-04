@@ -1,0 +1,67 @@
+
+.problems-page {
+  min-height: 100vh;
+  padding: 60px 8%;
+}
+
+.problems-header {
+  max-width: 800px;
+  margin-bottom: 40px;
+}
+
+.problems-header h1 {
+  margin: 10px 0;
+}
+
+.problems-header p {
+  line-height: 1.6;
+}
+
+.problems-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 900px;
+}
+
+.problem-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  padding: 25px;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+}
+
+.problem-info {
+  flex: 1;
+}
+
+.problem-info h2 {
+  margin-top: 0;
+}
+
+.problem-info p {
+  line-height: 1.6;
+}
+
+.problem-meta {
+  display: flex;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.problem-meta span {
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #f1f1f1;
+  font-size: 14px;
+}
+
+.solve-button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
