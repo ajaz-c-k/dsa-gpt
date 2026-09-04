@@ -12,7 +12,12 @@ client = genai.Client(
 )
 
 
-def generate_answer(question: str, context: list[str]):
+def generate_answer(
+    question: str,
+    context: list[str],
+    mode: str = "normal",
+    hint_level: int = 0
+):
 
     system_instruction = """
     You are DSA-GPT, an AI tutor specialized in
@@ -54,7 +59,7 @@ def generate_answer(question: str, context: list[str]):
        introducing advanced terminology.
 
     10. Use the retrieved DSA knowledge provided by the
-        application when it is relevant to the question.
+        application when it is relevant.
 
     11. Do not treat irrelevant retrieved information as
         authoritative. Use only information that is relevant
@@ -73,39 +78,90 @@ def generate_answer(question: str, context: list[str]):
         Do not add unnecessary sections just to make the
         response longer.
 
+    16. When the user requests a hint, provide only the
+        requested level of guidance.
+
+    17. Hint levels should become progressively more specific.
+
+        Hint level 1:
+        Give a conceptual nudge.
+        Do not mention the exact data structure or algorithm
+        unless it is necessary.
+
+        Hint level 2:
+        Give a stronger directional hint.
+        You may mention the relevant concept or data structure,
+        but do not provide the complete solution.
+
+        Hint level 3:
+        Give a very strong hint that is close to the solution.
+        Explain the key idea but still avoid providing complete
+        code unless explicitly requested.
+
+    18. If the user asks for the complete solution, provide
+        the solution and explain the reasoning.
+
     Your role is a teacher and mentor, not just an answer
     generator.
     """
 
     knowledge = "\n\n".join(context)
 
-    prompt = f"""
-    Relevant DSA knowledge:
+    if mode == "hint":
 
-    {knowledge}
+        prompt = f"""
+        Relevant DSA knowledge:
 
-    User question:
+        {knowledge}
 
-    {question}
+        User question:
 
-    Answer the user's question using the relevant knowledge
-    above when appropriate.
+        {question}
 
-    When appropriate, organize the response using sections
-    such as:
+        The learner is asking for a hint.
 
-    ### Explanation
-    ### Example
-    ### Approach
-    ### Complexity
+        Current hint level:
 
-    Do not force every section when it is not relevant.
+        {hint_level}
 
-    Remember that your goal is to teach the learner and help
-    them understand the reasoning, not simply provide an answer.
-    """
+        Give a level {hint_level} hint.
 
-    # Temporary debug logging
+        IMPORTANT:
+
+        - Do not give the complete solution.
+        - Do not provide complete code.
+        - Help the learner think about the next step.
+        - Keep the hint focused and concise.
+        """
+
+    else:
+
+        prompt = f"""
+        Relevant DSA knowledge:
+
+        {knowledge}
+
+        User question:
+
+        {question}
+
+        Answer the user's question using the relevant knowledge
+        above when appropriate.
+
+        When appropriate, organize the response using sections
+        such as:
+
+        ### Explanation
+        ### Example
+        ### Approach
+        ### Complexity
+
+        Do not force every section when it is not relevant.
+
+        Remember that your goal is to teach the learner and help
+        them understand the reasoning, not simply provide an answer.
+        """
+
     print("\n========== GEMINI INPUT ==========")
     print(prompt)
     print("==================================\n")

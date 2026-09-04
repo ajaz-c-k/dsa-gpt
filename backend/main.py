@@ -22,6 +22,8 @@ app.add_middleware(
 
 class Question(BaseModel):
     question: str
+    mode: str = "normal"
+    hint_level: int = 0
 
 
 @app.get("/")
@@ -54,10 +56,11 @@ def ask_question(data: Question):
 
     print("\n================================\n")
 
-
     answer = generate_answer(
         data.question,
-        relevant_knowledge
+        relevant_knowledge,
+        mode=data.mode,
+        hint_level=data.hint_level
     )
 
     return {
