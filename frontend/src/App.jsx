@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import Problems from "./Problems.jsx";
+import ProblemDetail from "./ProblemDetail.jsx";
 
 import "./App.css";
 
@@ -315,10 +316,14 @@ function App() {
         element={<Problems />}
       />
 
+      <Route
+        path="/problems/:id"
+        element={<ProblemDetail />}
+      />
+
     </Routes>
 
   );
-
 }
 
 
